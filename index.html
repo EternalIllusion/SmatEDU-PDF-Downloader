@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            transition: all .3s ease;
+        }
+        .form,.info,.div,.logo * {
+            margin: 2%;
+            width: 96%;
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+        a {
+            color:#f0c;
+        }
+        .info {
+            border: 2px solid #bbb;
+            border-radius: 5px;
+        }
+        p, h1, h2, h3, h4, .logo, .div * {
+            margin: 2.5%;
+        }
+        .logo, .logo * {
+            border: none;
+        }
+        input {
+            margin: 2%;
+            width: 96%;
+        }
+        .btns {
+            display: flex;
+            justify-content: space-around;
+        }
+        .err {
+            background: #ff000088;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+    <img src="./logo.png"></img>
+    <h1>教材下载器</h1>
+    </div>
+    <div class="form">
+        <p style="color: #aas;">&nbsp;▼请在下方填入教材网址▼</p><br />
+        <input type="text" value="" id="textId" class="textClass" name="textName">
+        <div class="btns"><button id="buttom" onclick="pastetext();">粘贴</button><button id="buttoc" onclick="buttonClear();">清除</button><button id="button" onclick="buttonClick();">确定</button></div>
+        <div id="info" class="info">状态信息会显示在此处。</div>
+        <p>&copy;<a href="https://github.com/EternalIllusion/">EternalIllusion</a>, 2022-2025, Partial rights reserved. <a href="https://github.com/EternalIllusion/smatedudownloader">GitHub Repo</a>
+    </div>
+    <div class="div">
+    <h2>使用说明</h2>
+    <p>第一步：去<a href="https://www.zxx.edu.cn/tchMaterial" target="_blank">这里(点击访问)</a>找到你需要的教材（无需注册/登录）并点击它，在看到一个小窗口里面有你想要下载的教材后，复制浏览器顶部的网址。</p>
+    <p>第二步：在下载器中的输入框粘贴它，点击“生成”</p>
+    <p>第三步：浏览器会弹出来一个提示框提示已经复制到粘贴板，点击打开浏览器会自动跳转，你也可以手动粘贴到地址栏。</p>
+    <p>第四步：点击“继续访问”，然后就会弹出一份PDF文件，你可以下载或者打印，大功告成!</p>
+    </div>
+    <script>
+        
+        function pastetext(){
+            document.getElementById("textId").focus();
+            document.execCommand('paste');
+        }
+        
+        function print(str){
+            document.getElementById("info").innerHTML = str;
+        }
+        function getQueryString(urlstr, name) {
+            try{
+                const url = new URL(urlstr);
+                return url.searchParams.get(name);
+            }catch(e){
+                print(`<div class="err">出错了！请输入正确的教材链接!</div>`);
+                return 0;
+            }
+        }
+        function copytext (content, message) {
+            var aux = document. createElement("input");
+            aux.setAttribute("value", content);document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+            if(message == null){print("复制成功");}else{print(message);}
+        }
+        
+        function buttonClick(){  
+            var value = document.getElementById("textId").value;
+            var output = getQueryString(value, "contentId");
+            if(output){
+            outputs = "https://www.zxx.edu.cn/tchMaterial/detail?contentType=x_url&contentId=" + output;
+            copytext(outputs, `已将结果复制至粘贴板:<br />${outputs}<br /><div class="btns"><button onclick="buttonClear();">清除</button><a href="${outputs}" target="_blank"><button>访问</button></a></div>`);}
+        }
+        
+        function buttonClear(){
+        outputs = ""
+        document.getElementById("textId").value = outputs;
+        }
+        
+    </script>
+</body>
+
+</html>
